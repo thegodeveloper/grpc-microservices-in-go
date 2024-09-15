@@ -44,6 +44,7 @@ jobs:
 
       - name: Run
         run: |
+          echo "Listing: ${{ github.event.inputs.listing }}"
           cd "$(find . -name listing_${{ github.event.inputs.listing }})"
           if [ -f "./run.sh" ]; then
             ./run.sh ${{ env.GITHUB_USERNAME }} ${{ env.GITHUB_EMAIL }}
