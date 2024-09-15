@@ -42,9 +42,27 @@ jobs:
           path: ${{ steps.go-cache-paths.outputs.go-build }}
           key: ${{ runner.os }}-go-build-${{ hashFiles('**/go.sum') }}
 
-      - name: Run
+      - name: Find and Execute Listing Script
         run: |
-          cd "$(find . -name listing_${{ github.event.inputs.listing }})"
+          # Find the directory for the specified listing
+          LISTING_DIR=$(find . -type d -name "listing_${{ github.event.inputs.listing }}" | head -n 1)
+
+          # Check if the directory exists
+          if [ -z "$LISTING_DIR" ]; then
+            echo "Error: Listing directory 'listing_${{ github.event.inputs.listing }}' not found."
+            exit 1
+          fi
+
+          # Change to the listing directory
+          cd "$LISTING_DIR"
+
+          # Ensure run.sh exists and is executable
+          if [ ! -x "./run.sh" ]; then
+            echo "Error: run.sh not found or not executable in $LISTING_DIR."
+            exit 1
+          fi
+
+          # Execute the run.sh script with GitHub username and email as arguments
           ./run.sh ${{ env.GITHUB_USERNAME }} ${{ env.GITHUB_EMAIL }}
           
 
