@@ -46,9 +46,9 @@ jobs:
         run: |
           cd "$(find . -name listing_${{ github.event.inputs.listing }})"
           if [ -f "./run.sh" ]; then
-            ls -la
             ./run.sh ${{ env.GITHUB_USERNAME }} ${{ env.GITHUB_EMAIL }}
           else
+            ls -la
             echo "Error: run.sh not found"
             exit 1
           fi
