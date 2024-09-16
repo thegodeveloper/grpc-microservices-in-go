@@ -1,6 +1,6 @@
 module listing_2.2
 
-go 1.17
+go 1.22
 
 require (
 	google.golang.org/grpc v1.42.0
